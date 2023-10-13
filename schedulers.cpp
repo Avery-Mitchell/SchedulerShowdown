@@ -58,3 +58,23 @@ int RoundRobin(const int& curTime, const vector<Process>& procList, const int& t
     // return back the index of the process to schedule next
     return idx;
 }
+
+//Shortest Process Next implementation. The function is nonpreemptive (it continues to run until it terminates or blocks itself).
+//It works by selecting the process with the least amount of time needed on the processor next.
+int ShortestProcessNext(const int& curTime, const vector<Process>& procList, const int& timeQuantum){
+
+}
+
+//Shortest Remaining Time implementation. The function is the preemptive version of Shortest Process Next.
+//It works by running the process for the length of the provided time quantum, and then selecting
+//The process with the least amount of time needed on the processor.
+int ShortestRemainingTime(const int& curTime, const vector<Process>& procList, const int& timeQuantum){
+
+}
+
+//Highest Response Ratio Next implementation. The function is nonpreemptive (it continues to run until it terminates of blocks itself).
+//It works by selecting the process with the best ratio to run next. The ratio is calcualted as such:
+// Ratio = (time spent waiting + time left on the processor) / (time left on the processor)
+int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList, const int& timeQuantum){
+
+}

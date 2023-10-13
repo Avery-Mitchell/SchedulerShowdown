@@ -51,4 +51,10 @@ inline void readInProcList(const string& fname, vector<Process>& procList)
 
 int RoundRobin(const int& curTime, const vector<Process>& procList, const int& timeQuantum);
 
+int ShortestProcessNext(const int& curTime, const vector<Process>& procList, const int& timeQuantum);
+
+int ShortestRemainingTime(const int& curTime, const vector<Process>& procList, const int& timeQuantum);
+
+int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList, const int& timeQuantum);
+
 #endif
