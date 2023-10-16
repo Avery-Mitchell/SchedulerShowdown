@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
 
             //Shortest Process Next
             case 2:
-                procIdx = ShortestProcessNext(curTime, procList, timeQuantum);
+                procIdx = ShortestProcessNext(curTime, procList);
                 break;
 
             //Shortest Remaining Time
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
 
             //Highest Response Ratio Next
             case 4:
-                procIdx = HighestResponseRatioNext(curTime, procList, timeQuantum);
+                procIdx = HighestResponseRatioNext(curTime, procList);
                 break;
         }
 
@@ -182,20 +182,17 @@ int main(int argc, char* argv[])
     cout << "\n\nRun Statistics:\n";
 
 
+    float averageNormTurnTime = 0.0;
 
-	/////////////////////////////////////
-    //TODO calculate the turnaroundTime and normalizedTurnaroundTime member variables for each process. 
-	//     Also	calculate the average normalized turnaround time for the run (use the variable declared 
-	//     here to store the result).
-
-    //turnaroundTime = the amount of time it took to execute + the time spent waiting
-    //normalizedTurnaroundTime = turnaroundTime / the amount of time it took to execute
-	float averageNormTurnTime = 0.0;
-
-	/////////////////////////////////////
-
-
-
+    //find the turnaround and normalized turnaround time for all the processes
+    for(int x=0; x < procList.size(); x++){
+        procList[x].turnaroundTime = procList[x].timeFinished - procList[x].startTime;
+        procList[x].normalizedTurnaroundTime = procList[x].turnaroundTime / procList[x].timeScheduled;
+        averageNormTurnTime += procList[x].normalizedTurnaroundTime;
+    }
+    averageNormTurnTime = averageNormTurnTime / procList.size();
+    
+	
 	//output the run stats for each process
 	//header output
 	cout << "       ";

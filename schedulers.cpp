@@ -61,10 +61,10 @@ int RoundRobin(const int& curTime, const vector<Process>& procList, const int& t
 
 //Shortest Process Next implementation. The function is nonpreemptive (it continues to run until it terminates or blocks itself).
 //It works by selecting the process with the least amount of time needed on the processor next.
-int ShortestProcessNext(const int& curTime, const vector<Process>& procList, const int& timeQuantum){
+int ShortestProcessNext(const int& curTime, const vector<Process>& procList){
 
     static int index = 0;       //Keeps track of what process index to return
-    static int runTime = 0;     //Keeps track of how much time the processes has been running
+    static int runTime = 0;     //Keeps track if the there is a process running
 
     //if the process is done, it resets the time 
     if(procList[index].isDone){
@@ -72,7 +72,7 @@ int ShortestProcessNext(const int& curTime, const vector<Process>& procList, con
     }
 
     //finds the first process in the procList that is not done
-    for(int y=0; y < procList.size(); y++){
+    for(long unsigned int y=0; y < procList.size(); y++){
         if((procList[y].isDone == 0) && (procList[y].startTime <= curTime) && (runTime == 0)){
             index = y;
             break;
@@ -80,7 +80,7 @@ int ShortestProcessNext(const int& curTime, const vector<Process>& procList, con
     }
 
     //finds the next process to run -- the process with the shortest totalTimeNeeded
-    for(int x=0; x < procList.size(); x++){
+    for(long unsigned int x=0; x < procList.size(); x++){
         if((procList[x].startTime <= curTime) && (procList[x].totalTimeNeeded < procList[index].totalTimeNeeded) && (procList[x].isDone != 1) && (runTime == 0)){
             index = x;
         }
@@ -88,8 +88,8 @@ int ShortestProcessNext(const int& curTime, const vector<Process>& procList, con
     runTime++;
 
     //need to check if all the processes are done, if so return -1
-    int count = 0;
-    for(int z=0; z < procList.size(); z++){
+    long unsigned int count = 0;
+    for(long unsigned int z=0; z < procList.size(); z++){
         if(procList[z].isDone){
             count++;
         }
@@ -106,12 +106,50 @@ int ShortestProcessNext(const int& curTime, const vector<Process>& procList, con
 //The process with the least amount of time needed on the processor.
 int ShortestRemainingTime(const int& curTime, const vector<Process>& procList, const int& timeQuantum){
 
+    static int index = 0;       //Keeps track of what process index to return
+    static int runTime = 0;     //Keeps track if the there is a process running
+
+    //if the process is done, it resets the time 
+    if(procList[index].isDone){
+        runTime = 0;
+    }
+
+    //finds the first process in the procList that is not done
+    for(long unsigned int y=0; y < procList.size(); y++){
+        if((procList[y].isDone == 0) && (procList[y].startTime <= curTime) && (runTime == 0)){
+            index = y;
+            break;
+        }
+    }
+
+    //finds the next process to run -- the process with the shortest time remaining
+    for(long unsigned int x=0; x < procList.size(); x++){
+        float indexTimeRemaining = procList[index].totalTimeNeeded - procList[index].timeScheduled;
+        float xTimeRemaining = procList[x].totalTimeNeeded - procList[x].timeScheduled; 
+        if((procList[x].startTime <= curTime) && (xTimeRemaining < indexTimeRemaining) && (procList[x].isDone != 1) && (runTime == 0)){
+            index = x;
+        }
+    }
+    //runTime++;
+
+    //need to check if all the processes are done, if so return -1
+    long unsigned int count = 0;
+    for(long unsigned int z=0; z < procList.size(); z++){
+        if(procList[z].isDone){
+            count++;
+        }
+    }
+    if(count == procList.size()){
+        return -1; 
+    }
+
+    return index; 
 }
 
 //Highest Response Ratio Next implementation. The function is nonpreemptive (it continues to run until it terminates of blocks itself).
 //It works by selecting the process with the best ratio to run next. The ratio is calcualted as such:
 // Ratio = (time spent waiting + service time) / (service time)
-int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList, const int& timeQuantum){
+int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList){
 
     static int index = 0;       //Keeps track of what process index to return
     static int runTime = 0;     //Keeps track of how much time the processes has been running
@@ -122,7 +160,7 @@ int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList
     }
 
     //finds the first process in the procList that is not done
-    for(int y=0; y < procList.size(); y++){
+    for(long unsigned int y=0; y < procList.size(); y++){
         if((procList[y].isDone == 0) && (procList[y].startTime <= curTime) && (runTime == 0)){
             index = y;
             break;
@@ -130,7 +168,7 @@ int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList
     }
 
     //finds the next process to run -- the process with the shortest totalTimeNeeded
-    for(int x=0; x < procList.size(); x++){
+    for(long unsigned int x=0; x < procList.size(); x++){
         float xTimeSpentWaiting = curTime - procList[x].startTime - procList[x].timeScheduled;
         float indexTimeSpentWaiting = curTime - procList[index].startTime - procList[index].timeScheduled;
         float xRatio = (xTimeSpentWaiting + procList[x].totalTimeNeeded) / procList[x].totalTimeNeeded;
@@ -143,8 +181,8 @@ int HighestResponseRatioNext(const int& curTime, const vector<Process>& procList
     runTime++;
 
     //need to check if all the processes are done, if so return -1
-    int count = 0;
-    for(int z=0; z < procList.size(); z++){
+    long unsigned int count = 0;
+    for(long unsigned int z=0; z < procList.size(); z++){
         if(procList[z].isDone){
             count++;
         }
